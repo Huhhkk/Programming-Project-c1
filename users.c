@@ -5,6 +5,7 @@
 #include <math.h>
 #include "Interface.h"
 #include "users.h"
+#include "book_management.h"
 #define LEN sizeof(struct book)
 #define LEN1 sizeof(struct reader)
 #define LEN2 sizeof(struct account)
@@ -25,7 +26,7 @@ void account() //输入账户密码的登录函数
     if (i == 1)
     {
         printf("Login succeeded!\n");
-        //main1();
+        main1();
     }
     else
     {
@@ -36,7 +37,7 @@ void account() //输入账户密码的登录函数
         }
         if (i == 0)
             printf("This user does not exist\n");
-        Login();
+            Login();
     }
 }
 
