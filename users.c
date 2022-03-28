@@ -6,6 +6,7 @@
 #include "Interface.h"
 #include "users.h"
 #include "book_management.h"
+#include "librarian.h"
 #define LEN sizeof(struct book)
 #define LEN1 sizeof(struct reader)
 #define LEN2 sizeof(struct account)
@@ -23,6 +24,11 @@ void account() //输入账户密码的登录函数
     printf("\nPlease enter your password:\n");
     scanf("%s", password);
     i = match(ac, password);
+    if (i == 2)
+    {
+        printf("Librarian Login succeeded!\n");
+        main2();
+    }
     if (i == 1)
     {
         printf("Login succeeded!\n");
@@ -55,6 +61,11 @@ int match(char m[20], char a[20]) //匹配数据库中的账号密码
     }
     for (; !feof(fp);)
 	{
+        if (strcmp(m, "Leeds") == 0){
+            if (strcmp(a, "Leeds") == 0){
+                return 2;
+            }
+        }
 		fscanf(fp, "%s%s", ac, password);
 		if (strcmp(m, ac) == 0)
 		{

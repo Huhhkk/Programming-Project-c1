@@ -65,4 +65,22 @@ void lookupbook();
 void borrowbook();
 void returnbook();
 void viewbook();
+void printbook();
+void addbook();
+void delbook();
+
+
+typedef struct book{
+	long id;                 //图书编号
+    char name[20];       //图书名
+    char author[20];     //图书作者
+    int count;               //图书存数
+    int borrow;              //借出数量
+}BOOK;
+typedef struct books{
+	BOOK data;
+    struct books *next;
+}BOOKS;
+
+
 #endif

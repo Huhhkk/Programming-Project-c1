@@ -23,6 +23,8 @@ void borrowbook();
 void returnbook();
 void viewbook();
 void addbook();
+void printbook();
+void addbook();
 
 // typedef struct _Book {
 // 	    unsigned int id; //Book ID
@@ -45,30 +47,15 @@ void addbook();
 //     a.length = 0;
 // }
 
-
-
-
-typedef struct book{
-	long id;                 //图书编号
-    char name[20];       //图书名
-    char author[20];     //图书作者
-    int count;               //图书存数
-    int borrow;              //借出数量
-}BOOK;
-typedef struct books{
-	BOOK data;
-    struct books *next;
-}BOOKS;
 BOOKS *head=NULL;
-
 // [打印图书信息]
 void printbook()
 {
     BOOKS *pr=head;
-    printf("*********************************打印图书信息**********************************\n");
+    printf("*********************************Book information**********************************\n");
 	if(pr == NULL)
 	{
-		printf("抱歉!图书馆没有图书!  (*_*)\n");
+		printf("There are no books in the library\n");
 	}
     while(pr != NULL)
 	{		 
@@ -86,7 +73,7 @@ void addbook()
     p=(BOOKS *)malloc(sizeof(BOOKS));
 	if(p == NULL) exit(0);
 	while(head != NULL && pr->next != NULL  )
-	{   //遍历到最后一个节点添加图书信息
+	{   
 	    pr = pr->next;
 	}
 	if (head == NULL)
@@ -102,33 +89,33 @@ void addbook()
 		pr->next = NULL;
 	}
 	while(1){
-	    printf("please input id(range:0~999999):\n");
+	    printf("please enter ID(range:0~999999):\n");
 	    scanf("%ld",&pr->data.id);
 		getchar();
         if(!(pr->data.id >= 0 && pr->data.id <= 999999)){
-            printf("非法输入(图书编号范围0~999999!!)\n");
-            fflush(stdin);//刷新标准输入缓冲区
+            printf("Illegal input\n");
+            fflush(stdin);
             continue;			
 		}
-        printf("please input name(length:0~19):\n");
+        printf("please enter TITLE(length:0~19):\n");
 		scanf("%s",pr->data.name);
 		if(strlen(pr->data.name) > 20){
-            printf("非法输入(图书名长度0~19)!!\n");
+            printf("Illegal input!!\n");
             fflush(stdin);
             continue;
 		}
-     	printf("please input author(length:0~19):\n");
+     	printf("please enter AUTHOR(length:0~19):\n");
 		scanf("%s",pr->data.author);
 		if(strlen(pr->data.author) > 20){
-            printf("非法输入(图书作者名长度0~19)!!\n");
+            printf("Illegal input\n");
             fflush(stdin);
             continue;
 		}
-    	printf("please input count(num:0~99):\n");
+    	printf("please enter STOCK(num:0~99):\n");
 	    scanf("%d",&pr->data.count);
 		getchar();
 	    if(!(pr->data.count >= 0 && pr->data.count <= 99)){
-            printf("非法输入(每类书总存数不得超过99本!!)\n");
+            printf("Illegal input\n");
             fflush(stdin);
             continue;
         }
@@ -141,12 +128,8 @@ void addbook()
 	}
 }
 
-
 void main1(){
-	addbook();
-	printbook();
 	FILE *fp;
-	load_books(fp);
     printf("\n****************************Welcome to the reader operation page****************************\n");
 	printf("^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^^~^~^~^~^~^~^~^^~^~^~^~^~^~^~^~^~^~^~\n"); 
     printf("\t\t\t  1:Lookup books\n\t\t\t  2:Borrow books\n\t\t\t  3:Return books\n\t\t\t  4:View the state of the books\n\t\t\t  0:Return to the previous menu\n");
@@ -158,27 +141,22 @@ void main1(){
 	{
 		switch(num){
         case 1:
-			printf("1");
             lookupbook();
-            break;
+            main1();
         case 2:
-			printf("2");
             borrowbook();
             store_books(fp);
-            break;
+            main1();
         case 3:
-			printf("3");
             returnbook();
             store_books(fp);
-            break;
+            main1();
 		case 4:
-			printf("4");
             viewbook();
-            break;
+            main1();
         case 0:
             Login();
         default:
-			printf("DEFAULT");
             break;
     }
 	} else{
@@ -224,9 +202,9 @@ int load_books(FILE *file){
 		}
 	}
     fclose(file);
-	printf("LOGIN DONE");
 	return 0;
 }
+//以二进制的格式将链表读入txt文件
 int store_books(FILE *file){
     BOOKS *pr = head;
 	if((file = fopen("library.txt","w")) == NULL)
@@ -240,7 +218,6 @@ int store_books(FILE *file){
         pr=pr->next;
 	}
 	fclose(file);
-	printf("STORE");
 	return 0;
 }
 
@@ -253,53 +230,51 @@ void lookupbook()
 	char name[20],author[20];
 	if(pr == NULL)
 	{
-		printf("There is no book in the library!!  (*_*)\n");
+		printf("There is no book in the library\n");
         return;
 	}
-	printf("请选择查找图书方式:\n1:按图书名查找\n2:按作者名查找\n0:放弃查找\n");
+	printf("Please select how to find books:\n1:Search by book name\n2:Find by author name\n0:Exit\n");
 	scanf("%d",&choice);
     switch(choice){
         case 1:
-			printf("请输入要查找的图书名(长度0~19):\n");
+			printf("Please enter the name of the book you want to find\n");
 			scanf("%s",name);
 		    if(strlen(name) > 20){
-                printf("非法输入(图书名长度0~19)!!\n");
-                printf("查找失败，系统自动为你返回上一级页面\n");
-                return;
+                printf("Illegal input\n");
+                main1();
 			}	
-            printf("******************************打印筛选后图书信息********************************\n");
+            printf("******************************Result********************************\n");
             while(pr != NULL)
 			{
 				if(strcmp(pr->data.name,name) == 0){
-                     printf("图书编号:%ld\t图书名:%s\t图书作者:%s\t图书总存数:%d\t借出数量:%d\n",pr->data.id,pr->data.name,pr->data.author,pr->data.count,pr->data.borrow);	                
+                     printf("ID:%ld\tTITLE:%s\tAUTHOR:%s\tTOTAL BOOK STOCK:%d\tLENDING QUANTITY:%d\n",pr->data.id,pr->data.name,pr->data.author,pr->data.count,pr->data.borrow);	                
 				}
 			    pr = pr->next;
 			}
             printf("********************************************************************************\n");
             break;
         case 2:
-            printf("请输入要查找的作者名(长度0~19):\n");
+            printf("Please enter the author name you want to find\n");
 			scanf("%s",author);
 		    if(strlen(author) > 20){
-                printf("非法输入(作者名长度0~19)!!\n");
-                printf("查找失败，系统自动为你返回上一级页面\n");
+                printf("Illegal input\n");
                 return;
 			}	
-            printf("******************************打印筛选后图书信息********************************\n");
+            printf("******************************Result********************************\n");
             while(pr != NULL)
 			{
 				if(strcmp(pr->data.author,author) == 0){
-                     printf("图书编号:%ld\t图书名:%s\t图书作者:%s\t图书总存数:%d\t借出数量:%d\n",pr->data.id,pr->data.name,pr->data.author,pr->data.count,pr->data.borrow);
+                     printf("ID:%ld\tTITLE:%s\tAUTHOR:%s\tTOTAL BOOK STOCK:%d\tLENDING QUANTITY:%d\n",pr->data.id,pr->data.name,pr->data.author,pr->data.count,pr->data.borrow);
 				}
 			    pr = pr->next;
 			}
             printf("********************************************************************************\n");
             break;
         case 0:
-			printf("放弃修改，系统自动为你返回上一级页面\n");
-            return;
+			main1();
+			break;
         default:
-			printf("非法输入，系统自动为你返回上一级页面\n");
+			printf("Illegal input\n");
             break;
     }
 }
@@ -312,46 +287,41 @@ void borrowbook()
 	BOOKS *pr = head;
 	if(pr == NULL)
 	{
-		printf("抱歉!图书馆没有图书!请先让管理员注册图书!!  (*_*)\n");
-	    printf("借阅失败，系统自动为你返回上一级页面\n");
+		printf("There are no books in the library\n");
         return;
 	}
-	printf("请输入你想要借阅图书的id:\n");
+	printf("Please enter the ID of the book you want to borrow:\n");
 	scanf("%ld",&id);
 	if(!(id >= 0 && id <= 999999)){
-         printf("非法输入(图书编号范围0~999999!!)\n");
-         printf("系统自动为你返回上一级页面 (^@^)\n");
+         printf("Illegal input\n");
          return;
     }
 	while(pr->next != NULL){
 		if(pr->data.id == id){
 			if(pr->data.borrow >= pr->data.count){
-				printf("抱歉(~-~),该类图书已借阅完了!!\n");	
-				printf("借阅失败，系统自动为你返回上一级页面\n");
+				printf("Sorry, the book has been borrowed\n");	
                 return;
 			}else{
 				break;
 			}          
 		}else{
 			if(pr == NULL){
-				printf("图书馆没有id为%ld的图书!! (&!&)\n",id);
-			    printf("借阅失败，系统自动为你返回上一级页面\n");
+				printf("The library doesn't have this book\n");
                 return;
 			}else{
 					pr = pr->next;
 			}
 		}
 	}
-	printf("请输入借阅该类图书的数量:\n");
+	printf("Please enter the number of books to borrow:\n");
 	scanf("%d",&num);
 	have = (pr->data.count)-(pr->data.borrow);
 	if(num > have){
-		printf("抱歉，图书馆目前该类图书仅有%d本可借\n",have);
-		printf("借书失败，系统自动为你返回上一级页面\n");
+		printf("Sorry, there are not enough books in the library at present\n");
 		return;
 	}
 	pr->data.borrow += num;
-	printf("恭喜借阅成功!!祝你学习愉快(^*^)\n");
+	printf("Borrowing succeeded\n");
 }
 
 // [归还图书]
@@ -362,43 +332,38 @@ void returnbook()
 	BOOKS *pr = head;
 	if(pr == NULL)
 	{
-		printf("抱歉!图书馆没有图书!请先让管理员注册图书!!  (*_*)\n");
-		printf("归还失败，系统自动为你返回上一级页面\n");
+		printf("There are no books in the library\n");
         return;
 	}
-	printf("请输入你想要归还图书的id:\n");
+	printf("Please enter the ID of the book you want to return:\n");
 	scanf("%ld",&id);
 	if(!(id >= 0 && id <= 999999)){
-         printf("非法输入(图书编号范围0~999999!!)\n");
-         printf("系统自动为你返回上一级页面 (^@^)\n");
+         printf("Illegal input\n");
          return;
     }
 	while(1){
 		if(pr->data.id == id){
 			if(pr->data.borrow == 0){
-				printf("抱歉(~-~),该类图书你没有借阅何来归还!!\n");
-				printf("归还失败，系统自动为你返回上一级页面\n");
+				printf("You didn't borrow this book\n");
                 return;
 			}else{
 				break;
 			}          
 		}
 		else if(pr->next == NULL){
-			printf("图书馆没有id为%ld的图书!! (&!&)\n",id);
-			printf("归还失败，系统自动为你返回上一级页面\n");
+			printf("There is no such book which ID is %ld!! (&!&)\n",id);
             return;
 		}
 		pr = pr->next;
 	}
-	printf("请输入归还该类图书的数量:\n");
+	printf("Please enter the number of books returned:\n");
 	scanf("%d",&num);
 	if(num > pr->data.borrow){
-		printf("抱歉，你还书的数量超过借书的数量\n");
-		printf("还书失败，系统自动为你返回上一级页面\n");
+		printf("Sorry, you returned more books than you borrowed\n");
 		return;
 	}
 	pr->data.borrow -= num;
-	printf("恭喜归还成功!!祝你学习愉快(^*^)\n");
+	printf("Return successful\n");
 }
 
 // [查看已借阅情况]
@@ -407,17 +372,50 @@ void viewbook()
 	BOOKS *pr=head;
 	if(pr == NULL)
 	{
-		printf("抱歉!图书馆没有图书!请先让管理员注册图书!!  (*_*)\n");
-		printf("查看失败，系统自动为你返回上一级页面\n");
+		printf("There are no books in the library\n");
         return;
 	}
-    printf("*******************************打印已借阅图书信息*******************************\n");
+    printf("*******************************Borrowed book information*******************************\n");
     while(pr != NULL)
 	{	
 		 if(pr->data.borrow > 0){
-             printf("图书编号:%ld\t图书名:%s\t图书作者:%s\t图书总存数:%d\t借出数量:%d\n",pr->data.id,pr->data.name,pr->data.author,pr->data.count,pr->data.borrow);
+             printf("ID:%ld\tTITLE:%s\tAUTHOR:%s\tTOTAL BOOK STOCK:%d\tLENDING QUANTITY:%d\n",pr->data.id,pr->data.name,pr->data.author,pr->data.count,pr->data.borrow);
 		 }
 		 pr = pr->next;
 	}
     printf("*******************************************************************************\n");
 }
+
+
+// [注销现存图书]
+void delbook(){
+	long delid;
+	BOOKS *pr = head,*p = head;
+	if(head == NULL){
+		printf("There are no books in the library\n");
+        return;
+	}
+	printf("Please enter the book ID you want to delete:");
+	scanf("%ld",&delid);
+	if(!(delid >= 0 && delid <= 999999)){
+        printf("Illegal input\n");
+		return;
+    }
+	while(delid != p->data.id && p->next != NULL){
+		pr = p;
+		p = p->next;
+	}
+	if(delid == p->data.id){
+		if(p == head){
+			head = p->next;
+		}else{
+			pr->next = p->next;
+		}
+		free(p);
+		printf("Successfully delete the book whose ID is %ld\n",delid);
+	}else{
+		printf("There is no such book whose ID is %ld!! (&!&)\n",delid);
+	}
+}
+
+

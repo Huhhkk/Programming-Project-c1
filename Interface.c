@@ -5,6 +5,7 @@
 #include <math.h>
 #include "Interface.h"
 #include "users.h"
+#include "book_management.h"
 #define LEN sizeof(struct book)
 #define LEN1 sizeof(struct reader)
 #define LEN2 sizeof(struct account)
@@ -15,6 +16,8 @@ void Login();
 
 void Login()
 {
+	FILE *fp;
+	load_books(fp);
 	void account();
 	void new_account();
 	char choose;
@@ -29,9 +32,10 @@ void Login()
 	  	new_account();
 	  	break;
 	  case'3':
-	  	break;
+	  	exit(1);
 	  default:
-	  	printf("Wrong input");
+	  	printf("Wrong input\n");
+		Login();
 		break;
   }
 }
