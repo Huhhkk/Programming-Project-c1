@@ -17,7 +17,7 @@ void Login();
 void Login()
 {
 	FILE *fp;
-	load_books(fp);
+	// load_books(fp);
 	void account();
 	void new_account();
 	char choose;
@@ -32,6 +32,7 @@ void Login()
 	  	new_account();
 	  	break;
 	  case'3':
+	    store_books(fp);
 	  	exit(1);
 	  default:
 	  	printf("Wrong input\n");

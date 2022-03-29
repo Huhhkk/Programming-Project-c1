@@ -10,8 +10,9 @@
 #define LEN2 sizeof(struct account)
 
 int store_books(FILE *file);
-int load_books(FILE *file);
+//int load_books(FILE *file, Book* books, BookList *theBook);
 int add_book(Book book);
+int load_books(FILE *file);
 int remove_book(Book book);
 BookList find_book_by_title (const char *title);
 BookList find_book_by_author (const char *author);
@@ -47,11 +48,11 @@ void addbook();
 //     a.length = 0;
 // }
 
-BOOKS *head=NULL;
+Book *head=NULL;
 // [打印图书信息]
 void printbook()
 {
-    BOOKS *pr=head;
+    Book *pr=head;
     printf("*********************************Book information**********************************\n");
 	if(pr == NULL)
 	{
@@ -59,7 +60,7 @@ void printbook()
 	}
     while(pr != NULL)
 	{		 
-         printf("ID:%ld\tTITLE:%s\tAUTHOR:%s\tNUMBER:%d\tBORROWEDNUMBER:%d\n",pr->data.id,pr->data.name,pr->data.author,pr->data.count,pr->data.borrow);
+         printf("ID:%ld\tTITLE:%s\tAUTHOR:%s\tYEAR OF PUBLICATION:%d\tNUMBER OF COPIES:%d\tLENDING QUANTITY:%d\n",pr->id,pr->title,pr->authors,pr->year,pr->copies,pr->borrow);	
 	     pr = pr->next;
 	}
     printf("*******************************************************************************\n");
@@ -68,9 +69,11 @@ void printbook()
 // [注册新图书]
 void addbook()
 {
-	BOOKS *p = NULL;
-    BOOKS *pr = head;
-    p=(BOOKS *)malloc(sizeof(BOOKS));
+	Book *p = NULL;
+    Book *pr = head;   
+    p=(Book *)malloc(sizeof(Book));
+	//p->title = (char *)malloc(sizeof(char));
+	//->authors = (char *)malloc(sizeof(char));
 	if(p == NULL) exit(0);
 	while(head != NULL && pr->next != NULL  )
 	{   
@@ -90,44 +93,61 @@ void addbook()
 	}
 	while(1){
 	    printf("please enter ID(range:0~999999):\n");
-	    scanf("%ld",&pr->data.id);
+	    scanf("%ld",&pr->id);
 		getchar();
-        if(!(pr->data.id >= 0 && pr->data.id <= 999999)){
+        if(!(pr->id >= 0 && pr->id <= 999999)){
             printf("Illegal input\n");
-            fflush(stdin);
+            //fflush(stdin);
             continue;			
 		}
+
         printf("please enter TITLE(length:0~19):\n");
-		scanf("%s",pr->data.name);
-		if(strlen(pr->data.name) > 20){
-            printf("Illegal input!!\n");
-            fflush(stdin);
-            continue;
-		}
-     	printf("please enter AUTHOR(length:0~19):\n");
-		scanf("%s",pr->data.author);
-		if(strlen(pr->data.author) > 20){
-            printf("Illegal input\n");
-            fflush(stdin);
-            continue;
-		}
-    	printf("please enter STOCK(num:0~99):\n");
-	    scanf("%d",&pr->data.count);
+		//pr->title = (char *)malloc(sizeof(char));
+		scanf("%s",pr->title);
 		getchar();
-	    if(!(pr->data.count >= 0 && pr->data.count <= 99)){
+		if(strlen(pr->title) > 20){
+            printf("Illegal input!!\n");
+            //fflush(stdin);
+            continue;
+		}
+
+     	printf("please enter AUTHOR(length:0~19):\n");
+		//pr->authors = (char *)malloc(sizeof(char));
+		scanf("%s",pr->authors);
+		getchar();
+		if(strlen(pr->authors) > 20){
             printf("Illegal input\n");
-            fflush(stdin);
+            //fflush(stdin);
+            continue;
+		}
+
+		printf("please enter the year of publication(num:0~2022):\n");
+	    scanf("%u",&pr->year);
+		getchar();
+	    if(!(pr->year >= 0 && pr->year <= 2022)){
+            printf("Illegal input\n");
+            //fflush(stdin);
             continue;
         }
-     	pr->data.borrow=0;
-		if(pr->data.borrow == 0){
-			printf("DONE!!\n");
+		
+    	printf("please enter number of copies the library has(num:0~99):\n");
+	    scanf("%d",&pr->copies);
+		getchar();
+	    if(!(pr->copies >= 0 && pr->copies <= 99)){
+            printf("Illegal input\n");
+            //fflush(stdin);
+            continue;
+        }
+     	pr->borrow=0;
+		if(pr->borrow == 0){
+			printf("ADD SUCCESSFULLY!!\n");
 			return;
 		}
 		free(p);
+		//free(p->title);
+		//free(p->authors);
 	}
 }
-
 void main1(){
 	FILE *fp;
     printf("\n****************************Welcome to the reader operation page****************************\n");
@@ -166,10 +186,93 @@ void main1(){
 	
     
 }
+// //初始化链表
+// Book* initList(){
+//     Book* L = (Book*)malloc(sizeof(Book));
+//     L -> next = NULL;
+//     return L;
+// }
+// //尾插法
+// void tailInsert(Book* L){
+//     Book* node = L;
+//     while(node->next != NULL){
+//         node = node -> next;
+//     }
+//     Book* n = (Book*)malloc(sizeof(Book));
+//     n -> next = NULL;
+//     node -> next = n;
+// }
+// //尾删除
+// int tailDelete(Book* L, int length){
+// 	BookList a;
+//     a.list = L;
+//     Book* node = L -> next;
+//     while(node){
+//         if(a.length == length){
+//             a.list->next = node->next;
+//             free(node);
+//             return 1;
+//         }
+//         a.list = node;
+//         node = node->next;
+//     }
+//     return 0;
+// }
 
+// //加载图书
+// int load_books(FILE *file, Book* books, BookList *theBook){
+//     file = fopen("library.txt", "r");
+//     if(file){
+// 		Book *tmp;
+// 		while (1)
+// 		{
+// 			tmp = books;
+// 			tailInsert(books);
+// 			while (tmp->next != NULL)
+// 			{
+// 				tmp = tmp->next;
+// 			}
+// 			if (fscanf(file, "%u %s %s %u %u %u", &tmp->id, tmp->title, tmp->authors, &tmp->year, &tmp->copies, &tmp->borrow) == EOF)
+// 			{
+// 				break;
+// 			}else{
+// 				theBook->length ++;
+// 			}
+// 		}
+// 		theBook->length ++;
+// 		tailDelete(books, theBook->length);
+// 		theBook->length --;
+// 		return 0;
+// 	}else{
+// 		printf("The file does not exist\n");
+// 		return 0;
+// 	}
+// }
+// //将链表读入txt文件
+// int store_books(FILE *file){
+//     Book *pr = head;
+// 	if((file = fopen("library.txt","w")) == NULL)
+// 	{
+// 		printf("Failure to open file!\n");
+//         exit(1);
+// 	}
+//     while(pr)
+// 	{
+// 		fprintf(file,"%d ",pr->id);
+//         fprintf(file,"%s ",pr->title);
+//         fprintf(file,"%s ",pr->authors);
+// 		fprintf(file,"%d ",pr->year);
+// 		fprintf(file,"%d ",pr->copies);
+// 		fprintf(file,"%d ",pr->borrow);
+//         fprintf(file,"%s","\n");//换行
+//         pr=pr->next;
+// 	}
+// 	fclose(file);
+// 	return 0;
+// }
 int load_books(FILE *file){
-    BOOKS *p;
-    BOOKS *pr;
+    Book *p;
+    Book *pr;
     pr=head;
     if((file = fopen("library.txt","r")) == NULL)
 	{
@@ -178,13 +281,15 @@ int load_books(FILE *file){
 	}
 	while(!feof(file))
 	{
-		p=(BOOKS *)malloc(sizeof(BOOKS)); 
+		p=(Book *)malloc(sizeof(Book)); 
+		//p->authors = (char *)malloc(sizeof(char));
+		//p->title = (char *)malloc(sizeof(char));
 		if(p == NULL)
 		{
 			printf("No enough memory!\n");
         	Login();
 		}
-        if(fread(p,sizeof(BOOKS),1,file) != 1){
+        if(fread(p,sizeof(Book),1,file) != 1){
 			break;
         }else{
 			if (head == NULL)
@@ -204,9 +309,11 @@ int load_books(FILE *file){
     fclose(file);
 	return 0;
 }
+
+
 //以二进制的格式将链表读入txt文件
 int store_books(FILE *file){
-    BOOKS *pr = head;
+    Book *pr = head;
 	if((file = fopen("library.txt","w")) == NULL)
 	{
 		printf("Failure to open file!\n");
@@ -214,7 +321,7 @@ int store_books(FILE *file){
 	}
     while(pr)
 	{
-		fwrite(pr,sizeof(BOOKS),1,file);
+		fwrite(pr,sizeof(Book),1,file);
         pr=pr->next;
 	}
 	fclose(file);
@@ -222,18 +329,20 @@ int store_books(FILE *file){
 }
 
 
+
 // [查找图书]
 void lookupbook()
 {
 	int choice;
-	BOOKS *pr=head;
+	Book *pr=head;
 	char name[20],author[20];
+	unsigned int year1;
 	if(pr == NULL)
 	{
 		printf("There is no book in the library\n");
         return;
 	}
-	printf("Please select how to find books:\n1:Search by book name\n2:Find by author name\n0:Exit\n");
+	printf("Please select how to find books:\n1:Search by book name\n2:Find by author name\n3:Find by year\n0:Exit\n");
 	scanf("%d",&choice);
     switch(choice){
         case 1:
@@ -246,8 +355,8 @@ void lookupbook()
             printf("******************************Result********************************\n");
             while(pr != NULL)
 			{
-				if(strcmp(pr->data.name,name) == 0){
-                     printf("ID:%ld\tTITLE:%s\tAUTHOR:%s\tTOTAL BOOK STOCK:%d\tLENDING QUANTITY:%d\n",pr->data.id,pr->data.name,pr->data.author,pr->data.count,pr->data.borrow);	                
+				if(strcmp(pr->title,name) == 0){
+                     printf("ID:%ld\tTITLE:%s\tAUTHOR:%s\tYEAR OF PUBLICATION:%d\tNUMBER OF COPIES:%d\tLENDING QUANTITY:%d\n",pr->id,pr->title,pr->authors,pr->year,pr->copies,pr->borrow);	                
 				}
 			    pr = pr->next;
 			}
@@ -263,8 +372,25 @@ void lookupbook()
             printf("******************************Result********************************\n");
             while(pr != NULL)
 			{
-				if(strcmp(pr->data.author,author) == 0){
-                     printf("ID:%ld\tTITLE:%s\tAUTHOR:%s\tTOTAL BOOK STOCK:%d\tLENDING QUANTITY:%d\n",pr->data.id,pr->data.name,pr->data.author,pr->data.count,pr->data.borrow);
+				if(strcmp(pr->authors,author) == 0){
+                     printf("ID:%ld\tTITLE:%s\tAUTHOR:%s\tYEAR OF PUBLICATION:%d\tNUMBER OF COPIES:%d\tLENDING QUANTITY:%d\n",pr->id,pr->title,pr->authors,pr->year,pr->copies,pr->borrow);	
+				}
+			    pr = pr->next;
+			}
+            printf("********************************************************************************\n");
+            break;
+		case 3:
+            printf("Please enter the year of publication of the book\n");
+			scanf("%u",&year1);
+		    if(year1 < 1 || year1 > 2022){
+                printf("Illegal input\n");
+                return;
+			}	
+            printf("******************************Result********************************\n");
+            while(pr != NULL)
+			{
+				if(year1 == pr->year){
+                     printf("ID:%ld\tTITLE:%s\tAUTHOR:%s\tYEAR OF PUBLICATION:%d\tNUMBER OF COPIES:%d\tLENDING QUANTITY:%d\n",pr->id,pr->title,pr->authors,pr->year,pr->copies,pr->borrow);	
 				}
 			    pr = pr->next;
 			}
@@ -284,7 +410,7 @@ void borrowbook()
 {
 	long id;
 	int num,have;
-	BOOKS *pr = head;
+	Book *pr = head;
 	if(pr == NULL)
 	{
 		printf("There are no books in the library\n");
@@ -297,8 +423,8 @@ void borrowbook()
          return;
     }
 	while(pr->next != NULL){
-		if(pr->data.id == id){
-			if(pr->data.borrow >= pr->data.count){
+		if(pr->id == id){
+			if(pr->borrow >= pr->copies){
 				printf("Sorry, the book has been borrowed\n");	
                 return;
 			}else{
@@ -315,12 +441,12 @@ void borrowbook()
 	}
 	printf("Please enter the number of books to borrow:\n");
 	scanf("%d",&num);
-	have = (pr->data.count)-(pr->data.borrow);
+	have = (pr->copies)-(pr->borrow);
 	if(num > have){
 		printf("Sorry, there are not enough books in the library at present\n");
 		return;
 	}
-	pr->data.borrow += num;
+	pr->borrow += num;
 	printf("Borrowing succeeded\n");
 }
 
@@ -329,7 +455,7 @@ void returnbook()
 {
 	long id;
 	int num;
-	BOOKS *pr = head;
+	Book *pr = head;
 	if(pr == NULL)
 	{
 		printf("There are no books in the library\n");
@@ -342,8 +468,8 @@ void returnbook()
          return;
     }
 	while(1){
-		if(pr->data.id == id){
-			if(pr->data.borrow == 0){
+		if(pr->id == id){
+			if(pr->borrow == 0){
 				printf("You didn't borrow this book\n");
                 return;
 			}else{
@@ -358,18 +484,18 @@ void returnbook()
 	}
 	printf("Please enter the number of books returned:\n");
 	scanf("%d",&num);
-	if(num > pr->data.borrow){
+	if(num > pr->borrow){
 		printf("Sorry, you returned more books than you borrowed\n");
 		return;
 	}
-	pr->data.borrow -= num;
+	pr->borrow -= num;
 	printf("Return successful\n");
 }
 
 // [查看已借阅情况]
 void viewbook()
 {
-	BOOKS *pr=head;
+	Book *pr=head;
 	if(pr == NULL)
 	{
 		printf("There are no books in the library\n");
@@ -378,8 +504,8 @@ void viewbook()
     printf("*******************************Borrowed book information*******************************\n");
     while(pr != NULL)
 	{	
-		 if(pr->data.borrow > 0){
-             printf("ID:%ld\tTITLE:%s\tAUTHOR:%s\tTOTAL BOOK STOCK:%d\tLENDING QUANTITY:%d\n",pr->data.id,pr->data.name,pr->data.author,pr->data.count,pr->data.borrow);
+		 if(pr->borrow > 0){
+             printf("ID:%ld\tTITLE:%s\tAUTHOR:%s\tYEAR OF PUBLICATION:%d\tNUMBER OF COPIES:%d\tLENDING QUANTITY:%d\n",pr->id,pr->title,pr->authors,pr->year,pr->copies,pr->borrow);	
 		 }
 		 pr = pr->next;
 	}
@@ -387,10 +513,10 @@ void viewbook()
 }
 
 
-// [注销现存图书]
+// [删除现存图书]
 void delbook(){
 	long delid;
-	BOOKS *pr = head,*p = head;
+	Book *pr = head,*p = head;
 	if(head == NULL){
 		printf("There are no books in the library\n");
         return;
@@ -401,11 +527,11 @@ void delbook(){
         printf("Illegal input\n");
 		return;
     }
-	while(delid != p->data.id && p->next != NULL){
+	while(delid != p->id && p->next != NULL){
 		pr = p;
 		p = p->next;
 	}
-	if(delid == p->data.id){
+	if(delid == p->id){
 		if(p == head){
 			head = p->next;
 		}else{

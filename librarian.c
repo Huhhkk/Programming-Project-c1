@@ -10,6 +10,9 @@ void delbook();
 #define LEN sizeof(struct book)
 #define LEN1 sizeof(struct reader)
 #define LEN2 sizeof(struct account)
+
+
+
 void main2(){
     FILE *fp;
     printf("\n****************************Welcome to the librarian operation page****************************\n");
@@ -27,11 +30,9 @@ void main2(){
             main2();
         case 2:
             addbook();
-            store_books(fp);
             main2();
         case 3:
             delbook();
-            store_books(fp);
             main2();
         case 0:
             Login();

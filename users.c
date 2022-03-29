@@ -13,9 +13,11 @@
 void account();
 void new_account();
 int match(char m[20], char a[20]);
+int onoff = 1;
 
 void account() //输入账户密码的登录函数
 {
+    FILE *fp;
     char ac[20];
     char password[20];
     int i = 2, j, k, n;
@@ -27,11 +29,21 @@ void account() //输入账户密码的登录函数
     if (i == 2)
     {
         printf("Librarian Login succeeded!\n");
+        if (onoff == 1)
+        {
+            load_books(fp);
+            onoff = 0;
+        }
         main2();
     }
     if (i == 1)
     {
         printf("Login succeeded!\n");
+        if (onoff == 1)
+        {
+            load_books(fp);
+            onoff = 0;
+        }
         main1();
     }
     else
