@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "interface.h": "c",
+        "users.h": "c",
+        "book_management.h": "c"
+    }
+}

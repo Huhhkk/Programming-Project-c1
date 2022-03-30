@@ -5,6 +5,7 @@
 #include <math.h>
 #include "Interface.h"
 #include "book_management.h"
+#include "librarian.h"
 #define LEN sizeof(struct book)
 #define LEN1 sizeof(struct reader)
 #define LEN2 sizeof(struct account)
@@ -23,14 +24,14 @@ void lookupbook();
 void borrowbook();
 void returnbook();
 void viewbook();
-void addbook();
 void printbook();
-void addbook();
+
 
 
 
 Book *head=NULL;
-// [打印图书信息]
+
+// Print book information
 void printbook()
 {
     Book *pr=head;
@@ -47,8 +48,8 @@ void printbook()
     printf("*******************************************************************************\n");
 }
 
-// [注册新图书]
-void addbook()
+// Register new books
+int add_book(Book book)
 {
 	Book *p = NULL;
     Book *pr = head;   
@@ -117,11 +118,14 @@ void addbook()
      	pr->borrow=0;
 		if(pr->borrow == 0){
 			printf("ADD SUCCESSFULLY!!\n");
-			return;
+			return 0;
 		}
 		free(p);
 	}
 }
+
+
+// Reader login selection interface
 void main1(){
 	FILE *fp;
     printf("\n****************************Welcome to the reader operation page****************************\n");
@@ -162,7 +166,7 @@ void main1(){
 }
 
 
-//加载图书
+// Load book information from txt file
 int load_books(FILE *file){
     Book *p;
     Book *pr;
@@ -205,7 +209,7 @@ int load_books(FILE *file){
 
 
 
-//将链表读入txt文件
+// Store the book information in the current library into txt file
 int store_books(FILE *file){
     Book *pr = head;
 	if((file = fopen("library.txt","w")) == NULL)
@@ -230,7 +234,7 @@ int store_books(FILE *file){
 
 
 
-// [查找图书]
+// Find books in three different ways
 void lookupbook()
 {
 	int choice;
@@ -305,7 +309,7 @@ void lookupbook()
     }
 }
 
-// [借阅图书]
+// Borrow books
 void borrowbook()
 {
 	long id;
@@ -350,7 +354,7 @@ void borrowbook()
 	printf("Borrowing succeeded\n");
 }
 
-// [归还图书]
+// Return books
 void returnbook()
 {
 	long id;
@@ -392,7 +396,7 @@ void returnbook()
 	printf("Return successful\n");
 }
 
-// [查看已借阅情况]
+// Check your borrowing status
 void viewbook()
 {
 	Book *pr=head;
@@ -413,19 +417,19 @@ void viewbook()
 }
 
 
-// [删除现存图书]
-void delbook(){
+// Delete existing books
+int remove_book(Book book){
 	long delid;
 	Book *pr = head,*p = head;
 	if(head == NULL){
 		printf("There are no books in the library\n");
-        return;
+        main2();
 	}
 	printf("Please enter the book ID you want to delete:");
 	scanf("%ld",&delid);
 	if(!(delid >= 0 && delid <= 999999)){
         printf("Illegal input\n");
-		return;
+		main2();
     }
 	while(delid != p->id && p->next != NULL){
 		pr = p;
@@ -439,8 +443,9 @@ void delbook(){
 		}
 		free(p);
 		printf("Successfully delete the book whose ID is %ld\n",delid);
+		return 0;
 	}else{
-		printf("There is no such book whose ID is %ld!! (&!&)\n",delid);
+		printf("There is no such book whose ID is %ld!!\n",delid);
 	}
 }
 

@@ -15,7 +15,8 @@ void new_account();
 int match(char m[20], char a[20]);
 int onoff = 1;
 
-void account() //输入账户密码的登录函数
+// Login function for entering account password
+void account() 
 {
     FILE *fp;
     char ac[20];
@@ -59,7 +60,8 @@ void account() //输入账户密码的登录函数
     }
 }
 
-int match(char m[20], char a[20]) //匹配数据库中的账号密码
+// Match the saved account and password
+int match(char m[20], char a[20]) 
 {
     FILE *fp;
     int n = 0, i = 0;
@@ -92,12 +94,13 @@ int match(char m[20], char a[20]) //匹配数据库中的账号密码
     return 0;
 }
 
-void new_account() //新建账户密码
+// New account
+void new_account()
 {
     FILE *fp;
     char ac[20];
     char password[20];
-    if ((fp = fopen("account.txt", "r")) == NULL) // if语句：打开图书馆文件，不存在此文件则新建
+    if ((fp = fopen("account.txt", "r")) == NULL)
     {
         fp = fopen("account.txt", "w");
         fclose(fp);
@@ -111,5 +114,3 @@ void new_account() //新建账户密码
     printf("Created successfully!\n");
     Login();
 }
-
-

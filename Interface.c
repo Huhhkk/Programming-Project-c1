@@ -13,7 +13,7 @@ void Menu();
 void Login();
 
 
-
+// Login selections
 void Login()
 {
 	FILE *fp;
@@ -40,6 +40,7 @@ void Login()
   }
 }
 
+// Main interface of library management system
 void Menu()
 {
 	printf("**********************************************");

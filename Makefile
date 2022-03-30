@@ -29,7 +29,7 @@ clean:
 
 # dependencies
 
-main.o:      main.c Interface.h
+main.o:      main.c library.h libraryStructures.h
 library.o:   library.c library.h librarian.h user.h utility.h libraryStructures.h
 librarian.o: librarian.c librarian.h libraryStructures.h
 user.o:      user.c user.h libraryStructures.h
