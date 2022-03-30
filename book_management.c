@@ -74,14 +74,12 @@ int add_book(Book book)
 		pr->next = NULL;
 	}
 	while(1){
-		char tmp1[100];
-		char tmp2[100];
 	    printf("please enter ID(range:0~999999):\n");
 	    scanf("%ld",&pr->id);
 		getchar();
         if(!(pr->id >= 0 && pr->id <= 999999)){
             printf("Illegal input\n");
-            continue;			
+            main2();			
 		}
 
         printf("please enter TITLE(length:0~19):\n");
@@ -89,7 +87,7 @@ int add_book(Book book)
 		getchar();
 		if(strlen(pr->title) > 20){
             printf("Illegal input!!\n");
-            continue;
+            main2();	
 		}
 
      	printf("please enter AUTHOR(length:0~19):\n");
@@ -97,7 +95,7 @@ int add_book(Book book)
 		getchar();
 		if(strlen(pr->title) > 20){
             printf("Illegal input\n");
-            continue;
+            main2();	
 		}
 
 		printf("please enter the year of publication(num:0~2022):\n");
@@ -105,7 +103,7 @@ int add_book(Book book)
 		getchar();
 	    if(!(pr->year >= 0 && pr->year <= 2022)){
             printf("Illegal input\n");
-            continue;
+            main2();	
         }
 		
     	printf("please enter number of copies the library has(num:0~99):\n");
@@ -113,7 +111,7 @@ int add_book(Book book)
 		getchar();
 	    if(!(pr->copies >= 0 && pr->copies <= 99)){
             printf("Illegal input\n");
-            continue;
+            main2();	
         }
      	pr->borrow=0;
 		if(pr->borrow == 0){
@@ -143,11 +141,10 @@ void main1(){
             main1();
         case 2:
             borrowbook();
-            store_books(fp);
             main1();
         case 3:
+			viewbook();
             returnbook();
-            store_books(fp);
             main1();
 		case 4:
             viewbook();
@@ -320,35 +317,39 @@ void borrowbook()
 		printf("There are no books in the library\n");
         return;
 	}
+	printbook();
 	printf("Please enter the ID of the book you want to borrow:\n");
 	scanf("%ld",&id);
 	if(!(id >= 0 && id <= 999999)){
          printf("Illegal input\n");
-         return;
+         main1();
     }
 	while(pr->next != NULL){
 		if(pr->id == id){
 			if(pr->borrow >= pr->copies){
 				printf("Sorry, the book has been borrowed\n");	
-                return;
-			}else{
-				break;
-			}          
-		}else{
-			if(pr == NULL){
-				printf("The library doesn't have this book\n");
-                return;
-			}else{
-					pr = pr->next;
+                main1();
 			}
+			break;        
 		}
+		if(pr == NULL){
+			printf("The library doesn't have this book\n");
+            main1();
+		}
+		pr = pr->next;
 	}
+
 	printf("Please enter the number of books to borrow:\n");
 	scanf("%d",&num);
+	if (num < 1)
+	{
+		printf("Illegal input");
+		main1();
+	}
 	have = (pr->copies)-(pr->borrow);
 	if(num > have){
 		printf("Sorry, there are not enough books in the library at present\n");
-		return;
+		main1();
 	}
 	pr->borrow += num;
 	printf("Borrowing succeeded\n");
@@ -363,26 +364,26 @@ void returnbook()
 	if(pr == NULL)
 	{
 		printf("There are no books in the library\n");
-        return;
+        main1();
 	}
 	printf("Please enter the ID of the book you want to return:\n");
 	scanf("%ld",&id);
 	if(!(id >= 0 && id <= 999999)){
          printf("Illegal input\n");
-         return;
+         main1();
     }
 	while(1){
 		if(pr->id == id){
 			if(pr->borrow == 0){
 				printf("You didn't borrow this book\n");
-                return;
+                main1();
 			}else{
 				break;
 			}          
 		}
 		else if(pr->next == NULL){
 			printf("There is no such book which ID is %ld!! (&!&)\n",id);
-            return;
+            main1();
 		}
 		pr = pr->next;
 	}
@@ -390,7 +391,7 @@ void returnbook()
 	scanf("%d",&num);
 	if(num > pr->borrow){
 		printf("Sorry, you returned more books than you borrowed\n");
-		return;
+		main1();
 	}
 	pr->borrow -= num;
 	printf("Return successful\n");
@@ -403,7 +404,7 @@ void viewbook()
 	if(pr == NULL)
 	{
 		printf("There are no books in the library\n");
-        return;
+        main1();
 	}
     printf("*******************************Borrowed book information*******************************\n");
     while(pr != NULL)
