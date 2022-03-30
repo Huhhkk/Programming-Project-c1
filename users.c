@@ -18,10 +18,10 @@ int onoff = 1;
 // Login function for entering account password
 void account() 
 {
-    FILE *fp;
+    FILE *fp = NULL;
     char ac[20];
     char password[20];
-    int i = 2, j, k, n;
+    int i = 2;
     printf("\nPlease enter your username:\n");
     scanf("%s", ac);
     printf("\nPlease enter your password:\n");
@@ -54,9 +54,10 @@ void account()
             printf("Wrong password!\n");
             account();
         }
-        if (i == 0)
+        if (i == 0){
             printf("This user does not exist\n");
             Login();
+        }
     }
 }
 
@@ -64,9 +65,8 @@ void account()
 int match(char m[20], char a[20]) 
 {
     FILE *fp;
-    int n = 0, i = 0;
     char ac[20];
-    char password[20], names[20];
+    char password[20];
 
     if ((fp = fopen("account.txt", "r")) == NULL)
     {

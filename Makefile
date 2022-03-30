@@ -1,8 +1,8 @@
 
 # code details
 
-EXE = ./bin/library
-SRC= main.c library.c librarian.c user.c utility.c
+EXE = ./library
+SRC= main.c librarian.c users.c Interface.c book_management.c
 
 # generic build details
 
@@ -29,9 +29,9 @@ clean:
 
 # dependencies
 
-main.o:      main.c library.h libraryStructures.h
-library.o:   library.c library.h librarian.h user.h utility.h libraryStructures.h
-librarian.o: librarian.c librarian.h libraryStructures.h
-user.o:      user.c user.h libraryStructures.h
-utility.o:   utility.c utility.h 
+main.o:              main.c Interface.h
+librarian.o:         librarian.c librarian.h book_management.h Interface.h
+users.o:             users.c users.h librarian.h book_management.h Interface.h
+Interface.o:         Interface.c Interface.h book_management.h users.h 
+book_management.o:   book_management.c book_management.h Interface.h librarian.h
 

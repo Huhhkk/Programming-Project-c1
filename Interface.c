@@ -16,7 +16,7 @@ void Login();
 // Login selections
 void Login()
 {
-	FILE *fp;
+	FILE *fp = NULL;
 	void account();
 	void new_account();
 	char choose;

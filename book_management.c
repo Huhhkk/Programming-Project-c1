@@ -42,7 +42,7 @@ void printbook()
 	}
     while(pr != NULL)
 	{		 
-         printf("ID:%ld\tTITLE:%s\tAUTHOR:%s\tYEAR OF PUBLICATION:%d\tNUMBER OF COPIES:%d\tLENDING QUANTITY:%d\n",pr->id,pr->title,pr->authors,pr->year,pr->copies,pr->borrow);	
+         printf("ID:%u\tTITLE:%s\tAUTHOR:%s\tYEAR OF PUBLICATION:%u\tNUMBER OF COPIES:%u\tLENDING QUANTITY:%u\n",pr->id,pr->title,pr->authors,pr->year,pr->copies,pr->borrow);	
 	     pr = pr->next;
 	}
     printf("*******************************************************************************\n");
@@ -75,7 +75,7 @@ int add_book(Book book)
 	}
 	while(1){
 	    printf("please enter ID(range:0~999999):\n");
-	    scanf("%ld",&pr->id);
+	    scanf("%u",&pr->id);
 		getchar();
         if(!(pr->id >= 0 && pr->id <= 999999)){
             printf("Illegal input\n");
@@ -107,7 +107,7 @@ int add_book(Book book)
         }
 		
     	printf("please enter number of copies the library has(num:0~99):\n");
-	    scanf("%d",&pr->copies);
+	    scanf("%u",&pr->copies);
 		getchar();
 	    if(!(pr->copies >= 0 && pr->copies <= 99)){
             printf("Illegal input\n");
@@ -125,7 +125,6 @@ int add_book(Book book)
 
 // Reader login selection interface
 void main1(){
-	FILE *fp;
     printf("\n****************************Welcome to the reader operation page****************************\n");
 	printf("^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^^~^~^~^~^~^~^~^^~^~^~^~^~^~^~^~^~^~^~\n"); 
     printf("\t\t\t  1:Lookup books\n\t\t\t  2:Borrow books\n\t\t\t  3:Return books\n\t\t\t  4:View the state of the books\n\t\t\t  0:Return to the previous menu\n");
@@ -257,7 +256,7 @@ void lookupbook()
             while(pr != NULL)
 			{
 				if(strcmp(pr->title,name) == 0){
-                     printf("ID:%ld\tTITLE:%s\tAUTHOR:%s\tYEAR OF PUBLICATION:%d\tNUMBER OF COPIES:%d\tLENDING QUANTITY:%d\n",pr->id,pr->title,pr->authors,pr->year,pr->copies,pr->borrow);	                
+                     printf("ID:%u\tTITLE:%s\tAUTHOR:%s\tYEAR OF PUBLICATION:%u\tNUMBER OF COPIES:%u\tLENDING QUANTITY:%u\n",pr->id,pr->title,pr->authors,pr->year,pr->copies,pr->borrow);	                
 				}
 			    pr = pr->next;
 			}
@@ -274,7 +273,7 @@ void lookupbook()
             while(pr != NULL)
 			{
 				if(strcmp(pr->authors,author) == 0){
-                     printf("ID:%ld\tTITLE:%s\tAUTHOR:%s\tYEAR OF PUBLICATION:%d\tNUMBER OF COPIES:%d\tLENDING QUANTITY:%d\n",pr->id,pr->title,pr->authors,pr->year,pr->copies,pr->borrow);	
+                     printf("ID:%u\tTITLE:%s\tAUTHOR:%s\tYEAR OF PUBLICATION:%u\tNUMBER OF COPIES:%u\tLENDING QUANTITY:%u\n",pr->id,pr->title,pr->authors,pr->year,pr->copies,pr->borrow);	
 				}
 			    pr = pr->next;
 			}
@@ -291,7 +290,7 @@ void lookupbook()
             while(pr != NULL)
 			{
 				if(year1 == pr->year){
-                     printf("ID:%ld\tTITLE:%s\tAUTHOR:%s\tYEAR OF PUBLICATION:%d\tNUMBER OF COPIES:%d\tLENDING QUANTITY:%d\n",pr->id,pr->title,pr->authors,pr->year,pr->copies,pr->borrow);	
+                     printf("ID:%u\tTITLE:%s\tAUTHOR:%s\tYEAR OF PUBLICATION:%u\tNUMBER OF COPIES:%u\tLENDING QUANTITY:%u\n",pr->id,pr->title,pr->authors,pr->year,pr->copies,pr->borrow);	
 				}
 			    pr = pr->next;
 			}
@@ -410,7 +409,7 @@ void viewbook()
     while(pr != NULL)
 	{	
 		 if(pr->borrow > 0){
-             printf("ID:%ld\tTITLE:%s\tAUTHOR:%s\tYEAR OF PUBLICATION:%d\tNUMBER OF COPIES:%d\tLENDING QUANTITY:%d\n",pr->id,pr->title,pr->authors,pr->year,pr->copies,pr->borrow);	
+             printf("ID:%u\tTITLE:%s\tAUTHOR:%s\tYEAR OF PUBLICATION:%u\tNUMBER OF COPIES:%u\tLENDING QUANTITY:%u\n",pr->id,pr->title,pr->authors,pr->year,pr->copies,pr->borrow);	
 		 }
 		 pr = pr->next;
 	}
@@ -447,7 +446,6 @@ int remove_book(Book book){
 		return 0;
 	}else{
 		printf("There is no such book whose ID is %ld!!\n",delid);
+		return 0;
 	}
 }
-
-
