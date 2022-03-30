@@ -11,8 +11,8 @@
 
 typedef struct _Book {
 	    unsigned int id; //Book ID
-		char title[20]; //book title
-		char authors[20]; //comma separated list of authors
+		char *title; //book title
+		char *authors; //comma separated list of authors
 		unsigned int year; // year of publication
 		unsigned int copies; //number of copies the library has
 		unsigned int borrow; //number of books has been borrowed

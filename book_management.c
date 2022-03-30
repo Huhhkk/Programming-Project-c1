@@ -27,26 +27,7 @@ void addbook();
 void printbook();
 void addbook();
 
-// typedef struct _Book {
-// 	    unsigned int id; //Book ID
-// 		char *title; //book title
-// 		char *authors; //comma separated list of authors
-// 		unsigned int year; // year of publication
-// 		unsigned int copies; //number of copies the library has
-// 		struct _Book *next; //pointer to the next book element
-// }Book;
 
-// typedef struct _BookList {
-// 	 Book* list; // pointer to a list of struct Book.
-// 	 unsigned int length; // number of elements in the (Book*) List 
-// }BookList;
-
-// BookList a;
-// void init(){
-//     a.list = (Book *)malloc(sizeof(Book));
-//     a.list->next = NULL;
-//     a.length = 0;
-// }
 
 Book *head=NULL;
 // [打印图书信息]
@@ -72,8 +53,8 @@ void addbook()
 	Book *p = NULL;
     Book *pr = head;   
     p=(Book *)malloc(sizeof(Book));
-	//p->title = (char *)malloc(sizeof(char));
-	//->authors = (char *)malloc(sizeof(char));
+	p->title = (char *)malloc(sizeof(char) * 100);
+	p->authors = (char *)malloc(sizeof(char) * 100);
 	if(p == NULL) exit(0);
 	while(head != NULL && pr->next != NULL  )
 	{   
@@ -92,32 +73,29 @@ void addbook()
 		pr->next = NULL;
 	}
 	while(1){
+		char tmp1[100];
+		char tmp2[100];
 	    printf("please enter ID(range:0~999999):\n");
 	    scanf("%ld",&pr->id);
 		getchar();
         if(!(pr->id >= 0 && pr->id <= 999999)){
             printf("Illegal input\n");
-            //fflush(stdin);
             continue;			
 		}
 
         printf("please enter TITLE(length:0~19):\n");
-		//pr->title = (char *)malloc(sizeof(char));
 		scanf("%s",pr->title);
 		getchar();
 		if(strlen(pr->title) > 20){
             printf("Illegal input!!\n");
-            //fflush(stdin);
             continue;
 		}
 
      	printf("please enter AUTHOR(length:0~19):\n");
-		//pr->authors = (char *)malloc(sizeof(char));
 		scanf("%s",pr->authors);
 		getchar();
-		if(strlen(pr->authors) > 20){
+		if(strlen(pr->title) > 20){
             printf("Illegal input\n");
-            //fflush(stdin);
             continue;
 		}
 
@@ -126,7 +104,6 @@ void addbook()
 		getchar();
 	    if(!(pr->year >= 0 && pr->year <= 2022)){
             printf("Illegal input\n");
-            //fflush(stdin);
             continue;
         }
 		
@@ -135,7 +112,6 @@ void addbook()
 		getchar();
 	    if(!(pr->copies >= 0 && pr->copies <= 99)){
             printf("Illegal input\n");
-            //fflush(stdin);
             continue;
         }
      	pr->borrow=0;
@@ -144,8 +120,6 @@ void addbook()
 			return;
 		}
 		free(p);
-		//free(p->title);
-		//free(p->authors);
 	}
 }
 void main1(){
@@ -186,90 +160,9 @@ void main1(){
 	
     
 }
-// //初始化链表
-// Book* initList(){
-//     Book* L = (Book*)malloc(sizeof(Book));
-//     L -> next = NULL;
-//     return L;
-// }
-// //尾插法
-// void tailInsert(Book* L){
-//     Book* node = L;
-//     while(node->next != NULL){
-//         node = node -> next;
-//     }
-//     Book* n = (Book*)malloc(sizeof(Book));
-//     n -> next = NULL;
-//     node -> next = n;
-// }
-// //尾删除
-// int tailDelete(Book* L, int length){
-// 	BookList a;
-//     a.list = L;
-//     Book* node = L -> next;
-//     while(node){
-//         if(a.length == length){
-//             a.list->next = node->next;
-//             free(node);
-//             return 1;
-//         }
-//         a.list = node;
-//         node = node->next;
-//     }
-//     return 0;
-// }
 
-// //加载图书
-// int load_books(FILE *file, Book* books, BookList *theBook){
-//     file = fopen("library.txt", "r");
-//     if(file){
-// 		Book *tmp;
-// 		while (1)
-// 		{
-// 			tmp = books;
-// 			tailInsert(books);
-// 			while (tmp->next != NULL)
-// 			{
-// 				tmp = tmp->next;
-// 			}
-// 			if (fscanf(file, "%u %s %s %u %u %u", &tmp->id, tmp->title, tmp->authors, &tmp->year, &tmp->copies, &tmp->borrow) == EOF)
-// 			{
-// 				break;
-// 			}else{
-// 				theBook->length ++;
-// 			}
-// 		}
-// 		theBook->length ++;
-// 		tailDelete(books, theBook->length);
-// 		theBook->length --;
-// 		return 0;
-// 	}else{
-// 		printf("The file does not exist\n");
-// 		return 0;
-// 	}
-// }
-// //将链表读入txt文件
-// int store_books(FILE *file){
-//     Book *pr = head;
-// 	if((file = fopen("library.txt","w")) == NULL)
-// 	{
-// 		printf("Failure to open file!\n");
-//         exit(1);
-// 	}
-//     while(pr)
-// 	{
-// 		fprintf(file,"%d ",pr->id);
-//         fprintf(file,"%s ",pr->title);
-//         fprintf(file,"%s ",pr->authors);
-// 		fprintf(file,"%d ",pr->year);
-// 		fprintf(file,"%d ",pr->copies);
-// 		fprintf(file,"%d ",pr->borrow);
-//         fprintf(file,"%s","\n");//换行
-//         pr=pr->next;
-// 	}
-// 	fclose(file);
-// 	return 0;
-// }
+
+//加载图书
 int load_books(FILE *file){
     Book *p;
     Book *pr;
@@ -282,14 +175,14 @@ int load_books(FILE *file){
 	while(!feof(file))
 	{
 		p=(Book *)malloc(sizeof(Book)); 
-		//p->authors = (char *)malloc(sizeof(char));
-		//p->title = (char *)malloc(sizeof(char));
+		p->authors = (char *)malloc(sizeof(char)*100);
+		p->title = (char *)malloc(sizeof(char)*100);
 		if(p == NULL)
 		{
 			printf("No enough memory!\n");
         	Login();
 		}
-        if(fread(p,sizeof(Book),1,file) != 1){
+        if(fscanf(file, "%d %s %s %d %d %d\n", &p->id, p->title, p->authors, &p->year, &p->copies, &p->borrow) != 6){
 			break;
         }else{
 			if (head == NULL)
@@ -311,7 +204,8 @@ int load_books(FILE *file){
 }
 
 
-//以二进制的格式将链表读入txt文件
+
+//将链表读入txt文件
 int store_books(FILE *file){
     Book *pr = head;
 	if((file = fopen("library.txt","w")) == NULL)
@@ -321,7 +215,13 @@ int store_books(FILE *file){
 	}
     while(pr)
 	{
-		fwrite(pr,sizeof(Book),1,file);
+		fprintf(file, "%d ", pr->id);
+		fprintf(file, "%s ", pr->title);
+		fprintf(file, "%s ", pr->authors);
+		fprintf(file, "%d ", pr->year);
+		fprintf(file, "%d ", pr->copies);
+		fprintf(file, "%d ", pr->borrow);
+		fprintf(file, "\n");
         pr=pr->next;
 	}
 	fclose(file);

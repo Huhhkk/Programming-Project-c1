@@ -17,7 +17,6 @@ void Login();
 void Login()
 {
 	FILE *fp;
-	// load_books(fp);
 	void account();
 	void new_account();
 	char choose;
