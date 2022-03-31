@@ -98,6 +98,7 @@ int match(char m[20], char a[20])
 void new_account()
 {
     FILE *fp;
+    char realName[20];
     char ac[20];
     char password[20];
     if ((fp = fopen("account.txt", "r")) == NULL)
@@ -106,9 +107,15 @@ void new_account()
         fclose(fp);
     }
     fp = fopen("account.txt", "a");
-    printf("\nPlease enter your account in the following format:\nUsername Password\n");
-    printf("Please enter:");
-    scanf("%s %s", ac, password);
+    //printf("\nPlease enter your account in the following format:\nUsername Password\n");
+    //printf("Please enter:");
+    printf("\nPlease enter your realName:\n");
+    scanf("%s", realName);
+    printf("\nPlease enter your username:\n");
+    scanf("%s", ac);
+    printf("\nPlease enter your password:\n");
+    scanf("%s", password);
+    //scanf("%s %s", ac, password);
     fprintf(fp, "%s %s\n", ac, password);
     fclose(fp);
     printf("Created successfully!\n");
