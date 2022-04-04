@@ -1,7 +1,7 @@
 
 # code details
 
-EXE = ./library
+EXE = library
 SRC= main.c librarian.c users.c Interface.c book_management.c
 
 # generic build details
@@ -25,7 +25,7 @@ $(EXE): $(OBJ)
 # clean up and remove object code and executable: type 'make clean'
 
 clean:
-	rm -f $(OBJ) $(EXE)
+	del -f $(OBJ) $(EXE) library.exe
 
 # dependencies
 

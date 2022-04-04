@@ -1,3 +1,0 @@
-1 Python Jamesa 2003 9 0 
-2 C Jerry 2006 4 0 
-3 Java Julie 2010 5 0 
