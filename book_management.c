@@ -43,11 +43,27 @@ void printbook()
 	printf("*******************************************************************************\n");
 }
 
+// Check whether the Bookid has been used!
+int check(unsigned int id)
+{
+	Book *pr = head;
+	while (pr != NULL){
+		if (id == pr->id)
+		{
+			return 1;
+		}
+		pr = pr->next;
+	}
+	return 2;
+}
+
 // Register new books
 int add_book(Book book)
 {
 	Book *p = NULL;
 	Book *pr = head;
+	int c = 0;
+	int b = 0;
 	p = (Book *)malloc(sizeof(Book));
 	p->title = (char *)malloc(sizeof(char) * 100);
 	p->authors = (char *)malloc(sizeof(char) * 100);
@@ -79,7 +95,13 @@ int add_book(Book book)
 			printf("Illegal input\n");
 			main2();
 		}
-
+		while (check(pr->id) == 1)
+		{
+			printf("The ID has been used.\n");
+			printf("The system detects that you may not be an administrator. The system will shut down immediately!!\n");
+			exit(0);
+		}
+		
 		printf("please enter TITLE(length:0~19):\n");
 		scanf("%s", pr->title);
 		getchar();
