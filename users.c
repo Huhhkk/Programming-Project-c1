@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <conio.h>
 #include <string.h>
 #include <math.h>
 #include "Interface.h"
@@ -101,21 +100,25 @@ void new_account()
     char realName[20];
     char ac[20];
     char password[20];
+    int s;
     if ((fp = fopen("account.txt", "r")) == NULL)
     {
         fp = fopen("account.txt", "w");
         fclose(fp);
     }
     fp = fopen("account.txt", "a");
-    //printf("\nPlease enter your account in the following format:\nUsername Password\n");
-    //printf("Please enter:");
     printf("\nPlease enter your realName:\n");
     scanf("%s", realName);
     printf("\nPlease enter your username:\n");
     scanf("%s", ac);
     printf("\nPlease enter your password:\n");
     scanf("%s", password);
-    //scanf("%s %s", ac, password);
+    s = match(ac, password);
+    if (s == 1 || s == 2)
+    {
+        printf("The user already exists.\n");
+        Login();
+    }
     fprintf(fp, "%s %s\n", ac, password);
     fclose(fp);
     printf("Created successfully!\n");

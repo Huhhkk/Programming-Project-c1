@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <conio.h>
 #include <string.h>
 #include <math.h>
 #include "Interface.h"
@@ -280,39 +279,38 @@ void borrowbook()
 {
 	long id;
 	int num, have;
-	Book *pr = head;
+	Book *pr = head, *p = head;
 	if (pr == NULL)
 	{
 		printf("There are no books in the library\n");
-		return;
+		main1();
 	}
 	printbook();
 	printf("Please enter the ID of the book you want to borrow:\n");
 	scanf("%ld", &id);
-	if (!(id >= 0 && id <= 999999))
+	if (!(id > 0 && id <= 999999))
 	{
 		printf("Illegal input\n");
 		main1();
 	}
-	while (pr->next != NULL)
+	while (id != pr->id && pr->next != NULL)
 	{
-		if (pr->id == id)
-		{
-			if (pr->borrow >= pr->copies)
-			{
-				printf("Sorry, the book has been borrowed\n");
-				main1();
-			}
-			break;
-		}
-		if (pr == NULL)
-		{
-			printf("The library doesn't have this book\n");
-			main1();
-		}
+		p = pr;
 		pr = pr->next;
 	}
-
+	if (id == pr->id)
+	{
+		if (p->borrow >= p->copies)
+		{
+			printf("Sorry, the book has been borrowed\n");
+			main1();
+		}
+	}
+	else{
+		printf("The library doesn't have this book\n");
+		main1();
+	}
+	
 	printf("Please enter the number of books to borrow:\n");
 	scanf("%d", &num);
 	if (num < 1)
@@ -364,7 +362,7 @@ void returnbook()
 		}
 		else if (pr->next == NULL)
 		{
-			printf("There is no such book which ID is %ld!! (&!&)\n", id);
+			printf("There is no such book which ID is %ld!\n", id);
 			main1();
 		}
 		pr = pr->next;
