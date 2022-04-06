@@ -62,8 +62,6 @@ int add_book(Book book)
 {
 	Book *p = NULL;
 	Book *pr = head;
-	int c = 0;
-	int b = 0;
 	p = (Book *)malloc(sizeof(Book));
 	p->title = (char *)malloc(sizeof(char) * 100);
 	p->authors = (char *)malloc(sizeof(char) * 100);
